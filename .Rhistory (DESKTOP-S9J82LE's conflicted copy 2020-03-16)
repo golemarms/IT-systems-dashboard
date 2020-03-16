@@ -1,0 +1,100 @@
+install.packages("visNetwork")
+source('C:/Users/Ivan/Dropbox/Coding/Rstudio/sys_network/system_network/try.R', echo=TRUE)
+shiny::runApp()
+packageVersion("shiny")
+shiny::runApp()
+runApp()
+runApp()
+runApp('example')
+runApp('example')
+runApp('example')
+runApp('example')
+runApp()
+runApp('example')
+runApp('example')
+nodes <- data.frame(id = 1:15, label = paste("Label", 1:15),
+group = sample(LETTERS[1:3], 15, replace = TRUE))
+edges <- data.frame(from = trunc(runif(15)*(15-1))+1,
+to = trunc(runif(15)*(15-1))+1)
+nodes
+nodes <- nodes_raw %>%
+mutate(id=ID,
+label=Name) %>%
+mutate(color=fct_recode(Classification, !!!class_colors),
+title=paste0("<b>Name:</b> ", Name,"<br>",
+"<b>Classification:</b> ", Classification,"<br>",
+"<b>Location:</b> ", Location,"<br>",
+"<b>Department:</b> ", Department,"<br>",
+"<b>IC:</b> ", IC,"<br>"))
+edges <- edges_raw %>%
+mutate(from=From,
+to=To,
+label=protocol,
+arrows="to")
+nodes
+visGroups()
+runApp()
+runApp()
+nodes
+nodes %>% pull(Classification)
+nodes %>% pull(Classification) %>% fct_count()
+nodes %>% pull(Classification)
+runApp()
+runApp()
+runApp()
+runApp()
+runApp()
+runApp()
+shiny::runApp()
+runApp('example')
+runApp()
+runApp()
+today()
+today
+Todau
+Today
+Today()
+now()
+require(lubridate)
+today()
+as.POSIXct(today())
+po <- as.POSIXct(today())
+po
+names(po)
+attributes(po)
+class(po)
+unclas(po)
+unclass(po)
+unclass(po)
+typeof(po)
+as.Date(now())
+as.Date(now()) %>% class()
+as.Date(now()) %>% typeof()
+as.Date(now()) %>% unclass()
+as.Date(now()) %>% unclass() %>% ./365
+as.Date(now()) %>% unclass() %>% {./365}
+now()
+now() %>% typeof
+now() %>% class
+now()
+today()
+today(tz="SGT")
+today(tz="UTC")
+today(tz="+8")
+today(tz="Singapore")
+today(tz="Singapore") %>% class()
+today(tz=UTC) %>% class()
+today(tz="UTC") %>% class()
+today(tz=NULL) %>% class()
+today() %>% class()
+ymd("20200101")
+ymd("20200101", tz="Singapore")
+require(hms)
+ymd("20200101", tz="Singapore") + parse_hm("08:30")
+ymd("20200101") + parse_hm("08:30")
+parse_hm("08:30") %>% class()
+parse_hm("08:30") %>% typeof()
+parse_hm("08:30") %>% unclass()
+ymd("20200101") + unclass()
+ymd("20200101") %>%  unclass()
+ymd("20200101") %>%  as.POSIXct()

@@ -1,0 +1,9 @@
+﻿From,To,protocol
+A,G,REST
+E,F,SFTP
+H,B,SOAP
+A,B,SOAP
+C,H,REST
+H,A,SFTP
+H,C,REST
+H,D,SOAP
