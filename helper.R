@@ -1,6 +1,8 @@
 require(tidyverse)
 require(visNetwork)
 require(shiny)
+require(searchable)
+require(plotly)
 
 class_colors <- c(chartreuse="Official (Open)",
                   `#98F5FF`="Official (Closed)",
@@ -16,6 +18,10 @@ edges_raw <- read_csv("links.csv", col_types = cols(.default = "f"))
 nodes <- nodes_raw %>% 
   mutate(id=ID,
          label=Name,
+         Classification=fct_relevel(Classification, c("Official (Open)",
+                                                      "Official (Closed)",
+                                                      "Restricted",
+                                                      "Confidential")), 
          group=Classification) %>% 
   mutate(title=paste0("<b>Name:</b> ", Name,"<br>", 
                       "<b>Classification:</b> ", Classification,"<br>", 
@@ -31,3 +37,70 @@ edges <- edges_raw %>%
 
 
 
+# functions ---------------------------------------------------------------
+
+make_choice_list <- function(df_nodes) {
+  df_nodes %>% 
+  distinct(ID, Name) %>% 
+  {split(as.character(.$ID), .$Name)} %>% 
+  unlist()
+}
+
+filter_edges <- function(df_edge, id) {
+  df_edge %>% 
+    filter(from==id | to ==id)
+}
+
+filter_systems <- function(df_nodes, df_edges, id) {
+  filtered_dfs <- list()
+  filtered_dfs$edges <- df_edges %>% filter_edges(id)
+  
+  ids_to_keep <- filtered_dfs$edges %>% 
+    select(from, to) %>% 
+    as_vector() %>% 
+    as.character() %>% 
+    unique()
+  
+  # browser()
+  filtered_dfs$nodes <- df_nodes %>% 
+    filter(id %in% ids_to_keep)
+  
+  return(filtered_dfs)
+}
+
+tweak_graph <- function(vis_network) {
+  vis_network %>% 
+  visNodes(shape="database", width="100%") %>% 
+  visGroups(groupname = "Official (Open)", color="chartreuse") %>% 
+  visGroups(groupname = "Official (Closed)", color="#98F5FF") %>% 
+  visGroups(groupname = "Restricted", color="orange") %>% 
+  visGroups(groupname = "Confidential", color="red") 
+}
+
+vis_inspect <- function(df_nodes, df_edges, id) {
+  filtered_dfs <- filter_systems(df_nodes, df_edges, id)
+  .nodes <- filtered_dfs$nodes %>% 
+    mutate(font.size=ifelse(ID==!!id, 20, 10),
+           font.size=ifelse(ID==!!id, 20, 10))
+  
+  .edges <- filtered_dfs$edges
+  
+  visNetwork(nodes=.nodes, edges=.edges) %>% 
+    tweak_graph()
+}
+
+
+plot_sys_class_count <- function(df_nodes) {
+  
+  df_nodes  %>% 
+    count(Classification) %>% 
+    ggplot(aes(x=1, y=n, fill=Classification)) +
+    geom_col(color="black") + 
+    geom_text(aes(label = n),
+                  position = position_stack(vjust = 0.5),
+              size=10) +
+    scale_fill_manual(values=invert(class_colors)) + 
+    coord_flip() + 
+    theme_minimal()
+  
+}
