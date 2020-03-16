@@ -1,4 +1,4 @@
-﻿ID,Name,Classification,Department,IC,Location
+﻿ID,Name,Classification,Department,IC,Hosting
 A,Alpha,Official (Open),WSP,Aarthi,GPC
 B,Bravo,Official (Open),WSP,Arun,on-prem
 C,Charlie,Restricted,WSN,Arun,GCC

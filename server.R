@@ -1,6 +1,6 @@
 source("helper.R")
 
-server <- function(input,output) {
+server <- function(input,output, session) {
   
   output$network <- renderVisNetwork({
     visNetwork(nodes, edges, main="Network Visualization") %>% 
@@ -13,6 +13,14 @@ server <- function(input,output) {
                  selectedBy = list(variable="Classification"))
   })
   
+  # observe({print(input$dept)})
+  # observe({print(input$hosting)})
   
+  df_filter <- reactive({nodes %>% 
+      filter(Department %in% input$dept) %>%
+      filter(Classification %in% input$classification) %>% 
+      filter(Hosting %in% input$hosting)})
+  
+  observe({updateSelectizeInput(session, "system_select", choices = df_filter() %>% pull(Name))})
   
 }

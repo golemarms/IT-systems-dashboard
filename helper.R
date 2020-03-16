@@ -19,7 +19,7 @@ nodes <- nodes_raw %>%
          group=Classification) %>% 
   mutate(title=paste0("<b>Name:</b> ", Name,"<br>", 
                       "<b>Classification:</b> ", Classification,"<br>", 
-                      "<b>Location:</b> ", Location,"<br>",
+                      "<b>Hosting:</b> ", Hosting,"<br>",
                       "<b>Department:</b> ", Department,"<br>",
                       "<b>IC:</b> ", IC,"<br>"))
 
