@@ -1,3 +1,8 @@
+
+# setup -------------------------------------------------------------------
+
+
+
 require(tidyverse)
 require(visNetwork)
 require(shiny)
@@ -77,16 +82,26 @@ tweak_graph <- function(vis_network) {
   visGroups(groupname = "Confidential", color="red") 
 }
 
+
 vis_inspect <- function(df_nodes, df_edges, id) {
   filtered_dfs <- filter_systems(df_nodes, df_edges, id)
-  .nodes <- filtered_dfs$nodes %>% 
-    mutate(font.size=ifelse(ID==!!id, 20, 10),
-           font.size=ifelse(ID==!!id, 20, 10))
   
   .edges <- filtered_dfs$edges
   
+  .nodes <- filtered_dfs$nodes %>% 
+    mutate(font.size=ifelse(id==!!id, 20, 10),
+           font.size=ifelse(id==!!id, 20, 10),
+           level=case_when(id==!!id ~ 2,
+                           id %in% !!.edges$from ~ 1,
+                           TRUE ~ 3))
+  
+  
   visNetwork(nodes=.nodes, edges=.edges) %>% 
-    tweak_graph()
+    tweak_graph() %>% 
+    visHierarchicalLayout(direction="LR",
+                          levelSeparation=300) %>% 
+    visEdges(smooth=list(enabled=F)) %>% 
+    visOptions(nodesIdSelection=list(enabled=T, selected=id))
 }
 
 

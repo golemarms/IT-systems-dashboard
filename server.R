@@ -9,6 +9,7 @@ server <- function(input,output, session) {
   
   output$network <- renderVisNetwork({
     visNetwork(nodes, edges, main="Network Visualization") %>% 
+    visOptions(selectedBy = list(variable="Department")) %>% 
     tweak_graph()
   })
   
@@ -36,7 +37,6 @@ server <- function(input,output, session) {
   ## Build system inspector
   
   output$inspect_system <- renderUI({system_inspector(chosen_system())})
-  output$dummy_message <- renderText({paste("hello", "you")})
   output$sys_feature_table <- renderTable({nodes %>%
                                            filter(ID == chosen_system()) %>% 
                                            select(matches("^[A-Z]", ignore.case=F))})
@@ -53,15 +53,20 @@ server <- function(input,output, session) {
       h3("Selected system: ", {nodes %>% filter(ID==system_select) %>% pull(Name)}),
       br(),
       tableOutput("sys_feature_table"),
-      visNetworkOutput("inspected_network", width = "100%")
+      actionButton("change_system", "Change!"),
+      br(),
+      visNetworkOutput("inspected_network", width = "100%"),
+      downloadButton("bia_download", label = "Download BIA form")
       
       )
     }
     
   }
   
+  observeEvent(input$change_system, {chosen_system(input$inspected_network_selected)})
+  
   ## Debugging etc.
   
-  observe({print(input$system_select)})
+  observe({cat("selected: ", input$system_select, "\n")})
   observe({cat("chosen: ", chosen_system(), "\n")})
 }
