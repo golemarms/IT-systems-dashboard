@@ -58,7 +58,7 @@ server <- function(input,output, session) {
           status="primary",
           width=6,
           downloadButton("bia_download", label = "Download BIA form"),
-          downloadButton("network_png_download", label = "Download network graph")),
+          downloadButton("network_png_download", label = "Download network interface diagram")),
       box(title="View system",
           status="primary",
           width=12,
