@@ -8,7 +8,7 @@ server <- function(input,output, session) {
   
   
   output$network <- renderVisNetwork({
-    visNetwork(nodes, edges, main="Network Visualization") %>% 
+    visNetwork(nodes, edges) %>% 
     visOptions(selectedBy = list(variable="Department")) %>% 
     tweak_graph()
   })
@@ -56,7 +56,8 @@ server <- function(input,output, session) {
       actionButton("change_system", "Change!"),
       br(),
       visNetworkOutput("inspected_network", width = "100%"),
-      downloadButton("bia_download", label = "Download BIA form")
+      downloadButton("bia_download", label = "Download BIA form"),
+      downloadButton("network_png_download", label = "Download network graph")
       
       )
     }

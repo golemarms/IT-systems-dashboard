@@ -1,13 +1,13 @@
 
 # setup -------------------------------------------------------------------
 
-
-
 require(tidyverse)
 require(visNetwork)
 require(shiny)
 require(searchable)
 require(plotly)
+require(shinydashboard)
+
 
 class_colors <- c(chartreuse="Official (Open)",
                   `#98F5FF`="Official (Closed)",
@@ -41,6 +41,7 @@ edges <- edges_raw %>%
          arrows="to") 
 
 
+n_systems <- nodes %>% summarise(n=n_distinct(ID)) %>% unlist(use.name=F)
 
 # functions ---------------------------------------------------------------
 
