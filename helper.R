@@ -14,10 +14,10 @@ class_colors <- c(chartreuse="Official (Open)",
                   orange="Restricted",
                   red="Confidential")
 
+template_folder <- "templates"
 
-
-nodes_raw <- read_csv("systems.csv", col_types = cols(.default = "f"))
-edges_raw <- read_csv("links.csv", col_types = cols(.default = "f"))
+nodes_raw <- read_csv(paste(template_folder, "systems.csv", sep="/"), col_types = cols(.default = "f"))
+edges_raw <- read_csv(paste(template_folder, "links.csv", sep="/"), col_types = cols(.default = "f"))
 
 
 nodes <- nodes_raw %>% 

@@ -1,9 +1,0 @@
-﻿ID,Name,Classification,Department,IC,Hosting
-A,Alpha,Official (Open),WSP,Aarthi,GPC
-B,Bravo,Official (Open),WSP,Arun,on-prem
-C,Charlie,Restricted,WSN,Arun,GCC
-D,Delta,Official (Open),WSN,Aarthi,GDC
-E,Echo,Confidential,CWD,Alan,GPC
-F,Foxtrot,Official (Closed),WSP,Aarthi,on-prem
-G,Golf,Restricted,WSP,Alan,GCC
-H,Hotel,Confidential,CWD,Alan,on-prem
