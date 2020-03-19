@@ -17,11 +17,13 @@ body <- dashboardBody(
             fluidRow(valueBox(n_systems, "Total number of systems", color="green", icon=icon("check-circle")),
                      valueBox(floor(n_systems/4), "In progress", color="yellow", icon=icon("cogs")),
                      valueBox(floor(n_systems/3), "Pending approval", color="red", icon=icon("exclamation-triangle"))),
-            # plotlyOutput("class_count_chart", height="200px"),
-            box(title="Network visualisation",
-                width=12,
+            box(title="Summary of systems",
+                plotlyOutput("class_count_chart", height="600px"),
                 status="info",
-                solidHeader = T,
+                width=4),
+            box(title="Network visualisation",
+                width=8,
+                status="info",
                 visNetworkOutput("network", width = "100%", height = "600px"))
             ),
     

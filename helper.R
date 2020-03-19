@@ -116,7 +116,11 @@ plot_sys_class_count <- function(df_nodes) {
                   position = position_stack(vjust = 0.5),
               size=10) +
     scale_fill_manual(values=invert(class_colors)) + 
-    coord_flip() + 
-    theme_minimal()
-  
+    # coord_flip() + 
+    theme_minimal() +
+    theme(axis.title=element_blank(),
+          axis.text=element_blank(),
+          axis.line=element_blank(),
+          panel.grid=element_blank(),
+          axis.ticks=element_blank())
 }

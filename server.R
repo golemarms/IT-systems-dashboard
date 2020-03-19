@@ -50,14 +50,20 @@ server <- function(input,output, session) {
     
     else{
       fillPage(
-      h3("Selected system: ", {nodes %>% filter(ID==system_select) %>% pull(Name)}),
-      br(),
-      tableOutput("sys_feature_table"),
-      actionButton("change_system", "Change!"),
-      br(),
-      visNetworkOutput("inspected_network", width = "100%"),
-      downloadButton("bia_download", label = "Download BIA form"),
-      downloadButton("network_png_download", label = "Download network graph")
+      box(title=div("Selected system: ", {nodes %>% filter(ID==system_select) %>% pull(Name)}),
+          status="primary",
+          tableOutput("sys_feature_table"),
+          width=6),
+      box(title="Download",
+          status="primary",
+          width=6,
+          downloadButton("bia_download", label = "Download BIA form"),
+          downloadButton("network_png_download", label = "Download network graph")),
+      box(title="View system",
+          status="primary",
+          width=12,
+          actionButton("change_system", "Change!"),
+          visNetworkOutput("inspected_network", width = "100%"))
       
       )
     }
