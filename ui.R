@@ -25,7 +25,7 @@ body <- dashboardBody(
                 width=8,
                 status="info",
                 visNetworkOutput("network", width = "100%", height = "600px"))
-            ),
+    ),
     
     tabItem(tabName = "system_inspector",
             sidebarLayout(
@@ -45,10 +45,7 @@ body <- dashboardBody(
                                    {nodes %>% pull(Classification) %>% levels}),
                 
                 selectizeInput("system_select", "Select system", {nodes %>% make_choice_list()}),
-                actionButton("submit_system", "Select"), ## Make sure to put in validation
-                h2("Download"),
-                downloadButton("bia_download", label = "Download BIA form"),
-                downloadButton("network_png_download", label = "Download network interface diagram")
+                actionButton("submit_system", "Select") ## Make sure to put in validation
               ),
               mainPanel(
                 uiOutput("inspect_system")
@@ -64,4 +61,3 @@ dashboardPage(
   sidebar,
   body
 )
-
