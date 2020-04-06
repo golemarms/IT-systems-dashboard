@@ -9,36 +9,52 @@ require(plotly)
 require(shinydashboard)
 
 
-class_colors <- c(chartreuse="Official (Open)",
-                  `#98F5FF`="Official (Closed)",
+class_colors <- c(chartreuse="Unclassified (Official Open)",
+                  `#98F5FF`="Unclassified (Official Closed)",
                   orange="Restricted",
                   red="Confidential")
 
+class_colors_df <- class_colors %>% enframe(name="color", value="Classification")
+
 template_folder <- "templates"
 
-nodes_raw <- read_csv(paste(template_folder, "systems.csv", sep="/"), col_types = cols(.default = "f"))
-edges_raw <- read_csv(paste(template_folder, "links.csv", sep="/"), col_types = cols(.default = "f"))
+nodes_raw <- read_csv(paste(template_folder, "systems_arun.csv", sep="/"),
+                      col_types = cols(.default = "f"))
+edges_raw <- read_csv(paste(template_folder, "links_arun.csv", sep="/"), col_types = cols(.default = "c"))
+
+
+
+edges <- edges_raw %>% 
+  mutate(from=FROM,
+         to=TO,
+         label=PROTOCOL,
+         arrows="to") 
+
+
+edge_systems <- edges %>% select(from, to) %>% unlist(use.names=F) %>% unique() 
+edge_sys_df <- tibble(ID=edge_systems) 
 
 
 nodes <- nodes_raw %>% 
+  select(ID=(`System Name`), Name=`Project Name`, Classification, Department, Status, Hosting=`Hosting Model`, Owner=`System Owner`, IDTD_rep=`IDTD Rep`) %>% 
+  mutate(ID=as.character(ID)) %>% 
+  full_join(edge_sys_df) %>% 
+  left_join(class_colors_df) %>% 
   mutate(id=ID,
-         label=Name,
-         Classification=fct_relevel(Classification, c("Official (Open)",
-                                                      "Official (Closed)",
+         label=ID,
+         color= replace_na(color, "grey"),
+         Classification=fct_relevel(Classification, c("Unclassified (Official Open)",
+                                                      "Unclassified (Official Closed)",
                                                       "Restricted",
                                                       "Confidential")), 
          group=Classification) %>% 
-  mutate(title=paste0("<b>Name:</b> ", Name,"<br>", 
-                      "<b>Classification:</b> ", Classification,"<br>", 
-                      "<b>Hosting:</b> ", Hosting,"<br>",
-                      "<b>Department:</b> ", Department,"<br>",
-                      "<b>IC:</b> ", IC,"<br>"))
+         mutate(title=paste0("<b>Short Name:</b> ", ID,"<br>", 
+                             "<b>Full Name:</b> ", Name,"<br>", 
+                             "<b>Classification:</b> ", Classification,"<br>", 
+                             "<b>Hosting:</b> ", Hosting,"<br>",
+                             "<b>Department:</b> ", Department,"<br>",
+                             "<b>IDTD rep:</b> ", IDTD_rep,"<br>"))
 
-edges <- edges_raw %>% 
-  mutate(from=From,
-         to=To,
-         label=protocol,
-         arrows="to") 
 
 
 n_systems <- nodes %>% summarise(n=n_distinct(ID)) %>% unlist(use.name=F)
@@ -56,6 +72,7 @@ filter_edges <- function(df_edge, id) {
   df_edge %>% 
     filter(from==id | to ==id)
 }
+
 
 filter_systems <- function(df_nodes, df_edges, id) {
   filtered_dfs <- list()
@@ -76,11 +93,7 @@ filter_systems <- function(df_nodes, df_edges, id) {
 
 tweak_graph <- function(vis_network) {
   vis_network %>% 
-  visNodes(shape="database", width="100%") %>% 
-  visGroups(groupname = "Official (Open)", color="chartreuse") %>% 
-  visGroups(groupname = "Official (Closed)", color="#98F5FF") %>% 
-  visGroups(groupname = "Restricted", color="orange") %>% 
-  visGroups(groupname = "Confidential", color="red") 
+  visNodes(shape="ellipse", width="100%") 
 }
 
 
@@ -90,8 +103,7 @@ vis_inspect <- function(df_nodes, df_edges, id) {
   .edges <- filtered_dfs$edges
   
   .nodes <- filtered_dfs$nodes %>% 
-    mutate(font.size=ifelse(id==!!id, 20, 10),
-           font.size=ifelse(id==!!id, 20, 10),
+    mutate(font.size=ifelse(id==!!id, 20, 15),
            level=case_when(id==!!id ~ 2,
                            id %in% !!.edges$from ~ 1,
                            TRUE ~ 3))

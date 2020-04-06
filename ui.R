@@ -45,7 +45,10 @@ body <- dashboardBody(
                                    {nodes %>% pull(Classification) %>% levels}),
                 
                 selectizeInput("system_select", "Select system", {nodes %>% make_choice_list()}),
-                actionButton("submit_system", "Select") ## Make sure to put in validation
+                actionButton("submit_system", "Select"), ## Make sure to put in validation
+                h2("Download"),
+                downloadButton("bia_download", label = "Download BIA form"),
+                downloadButton("network_png_download", label = "Download network interface diagram")
               ),
               mainPanel(
                 uiOutput("inspect_system")

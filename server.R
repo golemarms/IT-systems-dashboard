@@ -3,14 +3,14 @@ source("helper.R")
 server <- function(input,output, session) {
   
   output$class_count_chart <- renderPlotly({nodes %>%
-                                            plot_sys_class_count %>% 
-                                            ggplotly()})
+      plot_sys_class_count %>% 
+      ggplotly()})
   
   
   output$network <- renderVisNetwork({
     visNetwork(nodes, edges) %>% 
-    visOptions(selectedBy = list(variable="Department")) %>% 
-    tweak_graph()
+      visOptions(selectedBy = list(variable="Department")) %>% 
+      tweak_graph()
   })
   
   
@@ -21,7 +21,7 @@ server <- function(input,output, session) {
   })
   
   choice_list <- reactive({
-      df_filter() %>% 
+    df_filter() %>% 
       make_choice_list
   })
   
@@ -38,8 +38,8 @@ server <- function(input,output, session) {
   
   output$inspect_system <- renderUI({system_inspector(chosen_system())})
   output$sys_feature_table <- renderTable({nodes %>%
-                                           filter(ID == chosen_system()) %>% 
-                                           select(matches("^[A-Z]", ignore.case=F))})
+      filter(ID == chosen_system()) %>% 
+      select(matches("^[A-Z]", ignore.case=F))})
   
   output$inspected_network <- renderVisNetwork(vis_inspect(nodes, edges, chosen_system()))
   
@@ -50,21 +50,21 @@ server <- function(input,output, session) {
     
     else{
       fillPage(
-      box(title=div("Selected system: ", {nodes %>% filter(ID==system_select) %>% pull(Name)}),
-          status="primary",
-          tableOutput("sys_feature_table"),
-          width=6),
-      box(title="Download",
-          status="primary",
-          width=6,
-          downloadButton("bia_download", label = "Download BIA form"),
-          downloadButton("network_png_download", label = "Download network interface diagram")),
-      box(title="View system",
-          status="primary",
-          width=12,
-          actionButton("change_system", "Change!"),
-          visNetworkOutput("inspected_network", width = "100%"))
-      
+        box(title=div("Selected system: ", {nodes %>% filter(ID==system_select) %>% pull(Name)}),
+            status="primary",
+            tableOutput("sys_feature_table"),
+            width=6),
+        box(title="Download",
+            status="primary",
+            width=6,
+            downloadButton("bia_download", label = "Download BIA form"),
+            downloadButton("network_png_download", label = "Download network interface diagram")),
+        box(title="View system",
+            status="primary",
+            width=12,
+            actionButton("change_system", "Change!"),
+            visNetworkOutput("inspected_network", width = "100%"))
+        
       )
     }
     
