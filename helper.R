@@ -24,9 +24,9 @@ template_folder <- "templates"
 
 
 
-nodes_raw <- read_csv(paste(template_folder, "systems.csv", sep="/"),
+nodes_raw <- read_csv(paste(template_folder, "systems_gen.csv", sep="/"),
                       col_types = cols(.default = "f"))
-edges_raw <- read_csv(paste(template_folder, "links.csv", sep="/"),
+edges_raw <- read_csv(paste(template_folder, "links_gen.csv", sep="/"),
                       col_types = cols(.default = "c"))
 
 
@@ -79,6 +79,7 @@ nodes <- nodes_raw %>%
                              "<b>Classification:</b> ", CLASSIFICATION,"<br>", 
                              "<b>Hosting:</b> ", HOSTING_MODEL,"<br>",
                              "<b>Department:</b> ", DEPT,"<br>",
+                             "<b>DEPT OIC:</b> ", DEPT_OWNER,"<br>",
                              "<b>IDTD rep:</b> ", IDTD_REP,"<br>"))
 
 

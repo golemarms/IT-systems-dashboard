@@ -9,7 +9,11 @@ server <- function(input,output, session) {
   
   output$network <- renderVisNetwork({
     visNetwork(nodes, edges) %>% 
-      visOptions(selectedBy = list(variable="DEPT")) %>% 
+      visOptions(selectedBy = list(variable="DEPT"),
+                 highlightNearest = list(enabled=T,
+                                         degree = list(from=1, to=1),
+                                         algorithm = "hierarchical"),
+                 ) %>% 
       tweak_graph()
   })
   
