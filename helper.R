@@ -14,57 +14,82 @@ class_colors <- c(chartreuse="Unclassified (Official Open)",
                   orange="Restricted",
                   red="Confidential")
 
-class_colors_df <- class_colors %>% enframe(name="color", value="Classification")
+class_colors_df <- class_colors %>% enframe(name="color", value="CLASSIFICATION")
 
 template_folder <- "templates"
 
-nodes_raw <- read_csv(paste(template_folder, "systems_arun.csv", sep="/"),
+
+
+# import ------------------------------------------------------------------
+
+
+
+nodes_raw <- read_csv(paste(template_folder, "systems.csv", sep="/"),
                       col_types = cols(.default = "f"))
-edges_raw <- read_csv(paste(template_folder, "links_arun.csv", sep="/"), col_types = cols(.default = "c"))
+edges_raw <- read_csv(paste(template_folder, "links.csv", sep="/"),
+                      col_types = cols(.default = "c"))
+
+
+
+# make edges --------------------------------------------------------------
 
 
 
 edges <- edges_raw %>% 
-  mutate(from=FROM,
-         to=TO,
-         label=PROTOCOL,
-         arrows="to") 
+  select(FROM,
+         TO,
+         PROTOCOL) %>% 
+  rename(from=FROM,
+         to=TO) %>% 
+  mutate(arrows="to") 
 
 
+
+# some systems are documented in the edge table but not the node table. Need to document these systems.
 edge_systems <- edges %>% select(from, to) %>% unlist(use.names=F) %>% unique() 
 edge_sys_df <- tibble(ID=edge_systems) 
 
 
+# make nodes --------------------------------------------------------------
+
+
 nodes <- nodes_raw %>% 
-  select(ID=(`System Name`), Name=`Project Name`, Classification, Department, Status, Hosting=`Hosting Model`, Owner=`System Owner`, IDTD_rep=`IDTD Rep`) %>% 
+  select(ID,
+         SHORT_NAME, 
+         FULL_NAME,
+         CLASSIFICATION,
+         DEPT,
+         STATUS,
+         HOSTING_MODEL,
+         DEPT_OWNER,
+         IDTD_REP) %>% 
   mutate(ID=as.character(ID)) %>% 
-  full_join(edge_sys_df) %>% 
+  full_join(edge_sys_df) %>% #To make sure all system in edge df are listed in node df as well
   left_join(class_colors_df) %>% 
   mutate(id=ID,
-         label=ID,
+         label=SHORT_NAME,
          color= replace_na(color, "grey"),
-         Classification=fct_relevel(Classification, c("Unclassified (Official Open)",
+         CLASSIFICATION=fct_relevel(CLASSIFICATION, c("Unclassified (Official Open)",
                                                       "Unclassified (Official Closed)",
                                                       "Restricted",
                                                       "Confidential")), 
-         group=Classification) %>% 
-         mutate(title=paste0("<b>Short Name:</b> ", ID,"<br>", 
-                             "<b>Full Name:</b> ", Name,"<br>", 
-                             "<b>Classification:</b> ", Classification,"<br>", 
-                             "<b>Hosting:</b> ", Hosting,"<br>",
-                             "<b>Department:</b> ", Department,"<br>",
-                             "<b>IDTD rep:</b> ", IDTD_rep,"<br>"))
+         group=CLASSIFICATION) %>% 
+         mutate(title=paste0("<b>Short Name:</b> ", SHORT_NAME,"<br>", 
+                             "<b>Full Name:</b> ", FULL_NAME,"<br>", 
+                             "<b>Classification:</b> ", CLASSIFICATION,"<br>", 
+                             "<b>Hosting:</b> ", HOSTING_MODEL,"<br>",
+                             "<b>Department:</b> ", DEPT,"<br>",
+                             "<b>IDTD rep:</b> ", IDTD_REP,"<br>"))
 
 
-
-n_systems <- nodes %>% summarise(n=n_distinct(ID)) %>% unlist(use.name=F)
+n_systems <- nodes %>% summarise(n=n_distinct(id)) %>% unlist(use.name=F)
 
 # functions ---------------------------------------------------------------
 
 make_choice_list <- function(df_nodes) {
   df_nodes %>% 
-  distinct(ID, Name) %>% 
-  {split(as.character(.$ID), .$Name)} %>% 
+  distinct(id, FULL_NAME) %>% 
+  {split(as.character(.$id), .$FULL_NAME)} %>% 
   unlist()
 }
 
@@ -72,7 +97,6 @@ filter_edges <- function(df_edge, id) {
   df_edge %>% 
     filter(from==id | to ==id)
 }
-
 
 filter_systems <- function(df_nodes, df_edges, id) {
   filtered_dfs <- list()
@@ -121,8 +145,8 @@ vis_inspect <- function(df_nodes, df_edges, id) {
 plot_sys_class_count <- function(df_nodes) {
   
   df_nodes  %>% 
-    count(Classification) %>% 
-    ggplot(aes(x=1, y=n, fill=Classification)) +
+    count(CLASSIFICATION) %>% 
+    ggplot(aes(x=1, y=n, fill=CLASSIFICATION)) +
     geom_col(color="black") + 
     geom_text(aes(label = n),
                   position = position_stack(vjust = 0.5),

@@ -33,19 +33,19 @@ body <- dashboardBody(
                 h2("Select a system"),
                 width=3,
                 checkboxGroupInput("dept", "Department",
-                                   {nodes %>% pull(Department) %>% levels},
-                                   {nodes %>% pull(Department) %>% levels}),
+                                   {nodes %>% pull(DEPT) %>% levels},
+                                   {nodes %>% pull(DEPT) %>% levels}),
                 
                 checkboxGroupInput("hosting", "Hosting",
-                                   {nodes %>% pull(Hosting) %>% levels},
-                                   {nodes %>% pull(Hosting) %>% levels}),
+                                   {nodes %>% pull(HOSTING_MODEL) %>% levels},
+                                   {nodes %>% pull(HOSTING_MODEL) %>% levels}),
                 
                 checkboxGroupInput("classification", "Classification",
-                                   {nodes %>% pull(Classification) %>% levels},
-                                   {nodes %>% pull(Classification) %>% levels}),
+                                   {nodes %>% pull(CLASSIFICATION) %>% levels},
+                                   {nodes %>% pull(CLASSIFICATION) %>% levels}),
                 
                 selectizeInput("system_select", "Select system", {nodes %>% make_choice_list()}),
-                actionButton("submit_system", "Select"), ## Make sure to put in validation
+                actionButton("submit_system", "Choose"), ## Make sure to put in validation
                 h2("Download"),
                 downloadButton("bia_download", label = "Download BIA form"),
                 downloadButton("network_png_download", label = "Download network interface diagram")

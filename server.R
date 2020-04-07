@@ -9,15 +9,16 @@ server <- function(input,output, session) {
   
   output$network <- renderVisNetwork({
     visNetwork(nodes, edges) %>% 
-      visOptions(selectedBy = list(variable="Department")) %>% 
+      visOptions(selectedBy = list(variable="DEPT")) %>% 
       tweak_graph()
   })
   
+  # df_filter <- reactiveVal(nodes)
   
-  df_filter <- reactive({nodes %>% 
-      filter(Department %in% input$dept) %>%
-      filter(Classification %in% input$classification) %>% 
-      filter(Hosting %in% input$hosting)
+  df_filter <- reactive({nodes %>%
+      filter(DEPT %in% input$dept) %>%
+      filter(CLASSIFICATION %in% input$classification) %>%
+      filter(HOSTING_MODEL %in% input$hosting)
   })
   
   choice_list <- reactive({
@@ -38,7 +39,7 @@ server <- function(input,output, session) {
   
   output$inspect_system <- renderUI({system_inspector(chosen_system())})
   output$sys_feature_table <- renderTable({nodes %>%
-      filter(ID == chosen_system()) %>% 
+      filter(id == chosen_system()) %>% 
       select(matches("^[A-Z]", ignore.case=F))})
   
   output$inspected_network <- renderVisNetwork(vis_inspect(nodes, edges, chosen_system()))
@@ -50,7 +51,7 @@ server <- function(input,output, session) {
     
     else{
       fillPage(
-        box(title=div("Selected system: ", {nodes %>% filter(ID==system_select) %>% pull(Name)}),
+        box(title=div("Selected system: ", {nodes %>% filter(id==system_select) %>% pull(FULL_NAME)}),
             status="primary",
             tableOutput("sys_feature_table"),
             width=12),
@@ -72,4 +73,5 @@ server <- function(input,output, session) {
   
   observe({cat("selected: ", input$system_select, "\n")})
   observe({cat("chosen: ", chosen_system(), "\n")})
+
 }

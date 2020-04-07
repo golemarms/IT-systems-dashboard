@@ -1,0 +1,5 @@
+ID,SHORT_NAME,FULL_NAME,CLASSIFICATION,DEPT,STATUS,HOSTING_MODEL,DEPT_OWNER,IDTD_REP
+A,A,A,Unclassified (Official Open),ABC,,cloud,,
+B,B,B,Unclassified (Official Closed),EFG,,cloud,,
+C,C,C,Restricted,ABC,,on-prem,,
+D,D,D,Confidential,EFG,,on-prem,,
