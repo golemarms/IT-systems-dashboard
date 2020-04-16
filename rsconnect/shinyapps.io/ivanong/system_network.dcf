@@ -1,0 +1,10 @@
+name: system_network
+title:
+username:
+account: ivanong
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2126801
+bundleId: 3020365
+url: https://ivanong.shinyapps.io/system_network/
+when: 1587009958.96155
