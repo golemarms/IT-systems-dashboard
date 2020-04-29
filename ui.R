@@ -4,7 +4,7 @@ source("helper.R")
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Overview", tabName = "overview", icon=icon("tachometer-alt")),
-    menuItem("System Inpector", tabName = "system_inspector", icon=icon("search-plus")),
+    menuItem("System Inspector", tabName = "system_inspector", icon=icon("search-plus")),
     menuItem("All systems", tabName = "all_systems", icon=icon("list")),
     menuItem("Submit new system", tabName = "submit", icon=icon("plus"))
   )
@@ -30,8 +30,9 @@ body <- dashboardBody(
     tabItem(tabName = "system_inspector",
             sidebarLayout(
               sidebarPanel(
-                h2("Select a system"),
                 width=3,
+                h2("Select a system"),
+                # Selec
                 checkboxGroupInput("dept", "Department",
                                    {nodes %>% pull(DEPT) %>% levels},
                                    {nodes %>% pull(DEPT) %>% levels}),

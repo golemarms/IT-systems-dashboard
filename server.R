@@ -63,8 +63,8 @@ server <- function(input,output, session) {
         box(title="View system",
             status="primary",
             width=12,
-            actionButton("change_system", "Change!"),
-            visNetworkOutput("inspected_network", width = "100%"))
+            visNetworkOutput("inspected_network", width = "100%")),
+            actionButton("change_system", "Change to selected system", class="pull-right")
         
       )
     }

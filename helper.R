@@ -39,9 +39,9 @@ edges <- edges_raw %>%
   select(FROM,
          TO,
          PROTOCOL) %>% 
-  rename(from=FROM,
-         to=TO) %>% 
-  mutate(arrows="to") 
+  mutate(from=FROM,
+         to=TO,
+         arrows="to") 
 
 
 
@@ -123,9 +123,9 @@ tweak_graph <- function(vis_network) {
 
 
 vis_inspect <- function(df_nodes, df_edges, id) {
-  filtered_dfs <- filter_systems(df_nodes, df_edges, id)
+  filtered_dfs <- filter_systems(df_nodes, df_edges, id) 
   
-  .edges <- filtered_dfs$edges
+  .edges <- filtered_dfs$edges %>% mutate(label = PROTOCOL)
   
   .nodes <- filtered_dfs$nodes %>% 
     mutate(font.size=ifelse(id==!!id, 20, 15),
@@ -133,12 +133,12 @@ vis_inspect <- function(df_nodes, df_edges, id) {
                            id %in% !!.edges$from ~ 1,
                            TRUE ~ 3))
   
-  
   visNetwork(nodes=.nodes, edges=.edges) %>% 
     tweak_graph() %>% 
     visHierarchicalLayout(direction="LR",
                           levelSeparation=300) %>% 
-    visEdges(smooth=list(enabled=F)) %>% 
+    visEdges(smooth=list(enabled=T),
+             font=list(align="middle")) %>% 
     visOptions(nodesIdSelection=list(enabled=T, selected=id))
 }
 
