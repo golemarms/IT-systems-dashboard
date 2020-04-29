@@ -17,7 +17,6 @@ server <- function(input,output, session) {
       tweak_graph()
   })
   
-  # df_filter <- reactiveVal(nodes)
   
   df_filter <- reactive({nodes %>%
       filter(DEPT %in% input$dept) %>%
@@ -30,6 +29,22 @@ server <- function(input,output, session) {
       make_choice_list
   })
   
+  uppdate_all <- make_mult_updater(list(make_checkbox_updator(session, "dept", {nodes %>% pull(DEPT) %>% levels}),
+                                        make_checkbox_updator(session, "hosting", {nodes %>% pull(HOSTING_MODEL) %>% levels}),
+                                        make_checkbox_updator(session, "classification", {nodes %>% pull(CLASSIFICATION) %>% levels})))
+  observeEvent(input$toggle_all, {uppdate_all()})
+  
+  
+  update_depts <- make_checkbox_updator(session, "dept", {nodes %>% pull(DEPT) %>% levels})
+  observeEvent(input$toggle_depts, {update_depts()})
+  
+  update_hosting <- make_checkbox_updator(session, "hosting", {nodes %>% pull(HOSTING_MODEL) %>% levels})
+  observeEvent(input$toggle_hosting, {update_hosting()})
+  
+  update_class <- make_checkbox_updator(session, "classification", {nodes %>% pull(CLASSIFICATION) %>% levels})
+  observeEvent(input$toggle_class, {update_class()})
+  
+  # Update dropdown list of systems
   observe({updateSelectizeInput(session, "system_select", choices = choice_list())})
   
   

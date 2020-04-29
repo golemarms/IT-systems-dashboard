@@ -161,3 +161,45 @@ plot_sys_class_count <- function(df_nodes) {
           panel.grid=element_blank(),
           axis.ticks=element_blank())
 }
+
+
+# ui elements -------------------------------------------------------------
+
+make_CheckboxGroupInput <- function(inputId, label, choices, selected_init=TRUE){
+  if (selected_init){
+    selected <- choices
+  }
+  else{
+    selected <- character(0)
+  }
+  return(checkboxGroupInput(inputId=inputId, label=label, choices = choices, selected=selected))
+}
+
+
+make_checkbox_updator <- function(session, inputId, choices) {
+  select_state <-  FALSE
+  
+  update <- function() {
+    if (select_state){
+      selected <- choices
+    }
+    
+    else{
+      selected <- character(0)
+    }
+    # cat(inputId, "selected:", selected, "\n")
+    updateCheckboxGroupInput(session=session, inputId=inputId, selected=selected)
+    select_state <<- !select_state
+  }
+  
+  return(update)
+}
+
+make_mult_updater <- function(updater_list) {
+  
+  mult_updater <- function() {
+    updater_list %>% invoke_map()
+  }
+  
+  return(mult_updater)
+}

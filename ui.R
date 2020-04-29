@@ -32,21 +32,20 @@ body <- dashboardBody(
               sidebarPanel(
                 width=3,
                 h2("Select a system"),
-                # Selec
-                checkboxGroupInput("dept", "Department",
-                                   {nodes %>% pull(DEPT) %>% levels},
-                                   {nodes %>% pull(DEPT) %>% levels}),
+                actionButton("toggle_all", "Toggle All"), # Select/ deselect all
                 
-                checkboxGroupInput("hosting", "Hosting",
-                                   {nodes %>% pull(HOSTING_MODEL) %>% levels},
-                                   {nodes %>% pull(HOSTING_MODEL) %>% levels}),
+                make_CheckboxGroupInput("dept", "Department",{nodes %>% pull(DEPT) %>% levels}),
+                actionButton("toggle_depts", "Toggle Depts"), # Select/ deselect all
                 
-                checkboxGroupInput("classification", "Classification",
-                                   {nodes %>% pull(CLASSIFICATION) %>% levels},
-                                   {nodes %>% pull(CLASSIFICATION) %>% levels}),
+                make_CheckboxGroupInput("hosting", "Hosting",{nodes %>% pull(HOSTING_MODEL) %>% levels}),
+                actionButton("toggle_hosting", "Toggle Hosting"), # Select/ deselect all
                 
+                make_CheckboxGroupInput("classification", "Classification",{nodes %>% pull(CLASSIFICATION) %>% levels}),
+                actionButton("toggle_class", "Toggle Classification"), # Select/ deselect all
+
+                # Dropdown list of systems to select
                 selectizeInput("system_select", "Select system", {nodes %>% make_choice_list()}),
-                actionButton("submit_system", "Choose"), ## Make sure to put in validation
+                actionButton("submit_system", "Choose", style="color: #fff; background-color: #337ab7; border-color: #2e6da4"), ## Make sure to put in validation
                 h2("Download"),
                 downloadButton("bia_download", label = "Download BIA form"),
                 downloadButton("network_png_download", label = "Download network interface diagram")
