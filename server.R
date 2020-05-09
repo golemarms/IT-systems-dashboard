@@ -79,7 +79,7 @@ server <- function(input,output, session) {
             status="primary",
             width=12,
             visNetworkOutput("inspected_network", width = "100%")),
-            actionButton("change_system", "Change to selected system", class="pull-right")
+            actionButton("change_system", "Switch to selected system", class="pull-right", style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
         
       )
     }
