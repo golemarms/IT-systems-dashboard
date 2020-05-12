@@ -1,27 +1,27 @@
 ID,FULL_NAME,SHORT_NAME,DEPT_OWNER,IDTD_REP,DEPT,HOSTING_MODEL,CLASSIFICATION,STATUS
 A,Australia,AUS,Ava,Abraham,Alpha,On-prem,Unclassified (Official Open),In progress
 B,Belgium,BEL,Brooklyn,Bryan,Bravo,GDC,Unclassified (Official Closed),POC
-C,Canada,CAN,Charlotte,Calvin,Charlie,GPC,Restricted,deployed
-D,Denmark,DNK,Delilah,Dominic,Delta,GCC,Confidential,In progress
-E,Estonia,EST,Emma,Ezekiel,Echo,CC,Unclassified (Official Open),POC
-F,France,FRA,Faith,Francisco,Alpha,On-prem,Unclassified (Official Closed),deployed
-G,Greece,GRC,Grace,George,Bravo,GDC,Restricted,In progress
-H,Hungary,HUN,Harper,Hector,Charlie,GPC,Confidential,POC
-I,Italy,ITA,Isabella,Ivan,Delta,GCC,Unclassified (Official Open),deployed
-J,Japan,JPN,Josephine,Joshua,Echo,CC,Unclassified (Official Closed),In progress
-K,Korea,KOR,Kennedy,Kevin,Alpha,On-prem,Restricted,POC
-L,Latvia ,LVA,Luna,Leonardo,Bravo,GDC,Confidential,deployed
-M,Malta,MLT,Mia,Mateo,Charlie,GPC,Unclassified (Official Open),In progress
-N,Norway,NOR,Nora,Nicholas,Delta,GCC,Unclassified (Official Closed),POC
+C,Canada,CAN,Charlotte,Calvin,Charlie,CC,Restricted,deployed
+D,Denmark,DNK,Delilah,Dominic,Delta,On-prem,Confidential,In progress
+E,Estonia,EST,Emma,Ezekiel,Echo,GDC,Unclassified (Official Open),POC
+F,France,FRA,Faith,Francisco,Alpha,CC,Unclassified (Official Closed),deployed
+G,Greece,GRC,Grace,George,Bravo,On-prem,Restricted,In progress
+H,Hungary,HUN,Harper,Hector,Charlie,GDC,Confidential,POC
+I,Italy,ITA,Isabella,Ivan,Delta,CC,Unclassified (Official Open),deployed
+J,Japan,JPN,Josephine,Joshua,Echo,On-prem,Unclassified (Official Closed),In progress
+K,Korea,KOR,Kennedy,Kevin,Alpha,GDC,Restricted,POC
+L,Latvia ,LVA,Luna,Leonardo,Bravo,CC,Confidential,deployed
+M,Malta,MLT,Mia,Mateo,Charlie,On-prem,Unclassified (Official Open),In progress
+N,Norway,NOR,Nora,Nicholas,Delta,GDC,Unclassified (Official Closed),POC
 O,Oman,OMN,Olivia,Oscar,Echo,CC,Restricted,deployed
 P,Poland,POL,Penelope,Patrick,Alpha,On-prem,Confidential,In progress
 Q,Qatar,QAT,Quinn,Quentin,Bravo,GDC,Unclassified (Official Open),POC
-R,Russia,RUS,Riley,Robert,Charlie,GPC,Unclassified (Official Closed),deployed
-S,Sweden,SWE,Sophia,Steven,Delta,GCC,Restricted,In progress
-T,Thailand,THA,Taylor,Theodore,Echo,CC,Confidential,POC
-U,United States,USA,Unique,Ulises,Alpha,On-prem,Unclassified (Official Open),deployed
-V,Vietnam,VNM,Victoria,Vincent,Bravo,GDC,Unclassified (Official Closed),In progress
-W,Wales,WAL,Willow,Walter,Charlie,GPC,Restricted,POC
-X,Xinjiapo,XJP,Ximena,Xavier,Delta,GCC,Confidential,deployed
-Y,Yemen,YEM,Yaretzi,Yusuf,Echo,CC,Unclassified (Official Open),In progress
-Z,Zambia,ZMB,Zoey,Zachary,Alpha,On-prem,Unclassified (Official Closed),POC
+R,Russia,RUS,Riley,Robert,Charlie,CC,Unclassified (Official Closed),deployed
+S,Sweden,SWE,Sophia,Steven,Delta,On-prem,Restricted,In progress
+T,Thailand,THA,Taylor,Theodore,Echo,GDC,Confidential,POC
+U,United States,USA,Unique,Ulises,Alpha,CC,Unclassified (Official Open),deployed
+V,Vietnam,VNM,Victoria,Vincent,Bravo,On-prem,Unclassified (Official Closed),In progress
+W,Wales,WAL,Willow,Walter,Charlie,GDC,Restricted,POC
+X,Xinjiapo,XJP,Ximena,Xavier,Delta,CC,Confidential,deployed
+Y,Yemen,YEM,Yaretzi,Yusuf,Echo,On-prem,Unclassified (Official Open),In progress
+Z,Zambia,ZMB,Zoey,Zachary,Alpha,GDC,Unclassified (Official Closed),POC

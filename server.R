@@ -2,10 +2,12 @@ source("helper.R")
 
 server <- function(input, output, session) {
   
-  output$class_count_chart <- renderPlotly({nodes %>%
-      plot_sys_class_count %>% 
-      ggplotly()})
+  ## Render overview charts
   
+  output$dept_class_host_barchart <- renderPlot(dept_class_host_barchart())
+  output$class_host_barchart <- renderPlot(class_host_barchart())
+  
+  ## Render network diagram
   
   output$network <- renderVisNetwork({
     visNetwork(nodes, edges) %>% 
@@ -30,6 +32,8 @@ server <- function(input, output, session) {
       make_choice_list
   })
   
+  ## Update checkboxes upon activation of toggle button
+  
   update_all <- make_mult_updater(list(make_checkbox_updator(session, "dept", {nodes %>% pull(DEPT) %>% levels}),
                                         make_checkbox_updator(session, "hosting", {nodes %>% pull(HOSTING_MODEL) %>% levels}),
                                         make_checkbox_updator(session, "classification", {nodes %>% pull(CLASSIFICATION) %>% levels})))
@@ -45,6 +49,13 @@ server <- function(input, output, session) {
   update_class <- make_checkbox_updator(session, "classification", {nodes %>% pull(CLASSIFICATION) %>% levels})
   observeEvent(input$toggle_class, {update_class()})
   
+  
+  # All systems
+  
+  ## Nodes table
+  
+  output$nodesTable <- renderDataTable({{nodes %>% select(matches("^[A-Z_]+$", ignore.case = F))}})
+  
   # Update dropdown list of systems
   observe({updateSelectizeInput(session, "system_select", choices = choice_list())})
   
@@ -58,7 +69,7 @@ server <- function(input, output, session) {
     if (is_null) {
       updateButton(session=session,
                    inputId="choose_system",
-                   label="Invalid combination",
+                   label="Invalid selection",
                    style= "secondary", 
                    disabled=T)
     }

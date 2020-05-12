@@ -8,6 +8,7 @@ require(shinyBS)
 require(searchable)
 require(plotly)
 require(shinydashboard)
+require(DT)
 
 
 class_colors <- c(chartreuse="Unclassified (Official Open)",
@@ -122,12 +123,80 @@ filter_systems <- function(df_nodes, df_edges, id) {
   return(filtered_dfs)
 }
 
+
+# graphs etc --------------------------------------------------------------
+
+theme_set(theme_minimal())
+theme_update(axis.title.y=element_blank(),
+             axis.line=element_blank(),
+             panel.grid=element_blank(),
+             axis.ticks=element_blank())
+
+## Create overall classification - hosting barchart
+
+class_host_barchart <- function(.nodes=nodes) {
+  .nodes %>%
+    mutate(CLASSIFICATION= fct_recode(CLASSIFICATION,
+                                      `Unclassified\n(Official Open)`="Unclassified (Official Open)",
+                                      `Unclassified\n(Official Closed)`="Unclassified (Official Closed)")) %>% 
+    count(HOSTING_MODEL, CLASSIFICATION) %>% 
+    group_by(CLASSIFICATION) %>% 
+    mutate(class_count = sum(n)) %>% 
+    ggplot(aes(x=CLASSIFICATION, y=n)) +
+    geom_col(aes(fill=HOSTING_MODEL), width=0.7, colour="black") +
+    geom_text(aes(label=n, group=HOSTING_MODEL), position= position_stack(vjust = 0.5), size = 7) +
+    geom_text(aes(label=class_count, y=class_count), position=position_nudge(y=0.5), size=10) +
+    scale_fill_brewer(palette="PuBu") +
+    theme(axis.text.y = element_blank(),
+          axis.title.x.bottom = element_text(face="bold", margin=margin(t=0.5, unit="cm")))
+}
+
+
+
+dept_class_host_barchart <- function(.nodes=nodes) {
+  class_count_df <- .nodes %>% 
+    count(DEPT, CLASSIFICATION) 
+  
+  host_count_df <- .nodes %>% 
+    count(DEPT, HOSTING_MODEL) 
+  
+  dept_count_df <- .nodes %>% 
+    count(DEPT) %>% 
+    mutate(label = paste(n, "Systems"))
+  
+  ggplot(mapping=aes(y=n)) +
+    geom_col(aes(x=1, fill=CLASSIFICATION), data=class_count_df, colour="black", width=0.7) + 
+    geom_text(aes(x=1, label = n, group=CLASSIFICATION), size = 7, data=class_count_df, position = position_stack(vjust = 0.5)) +
+    scale_fill_manual(values=invert(class_colors)) + 
+    ggnewscale::new_scale_fill() +
+    geom_col(aes(x=2, fill=HOSTING_MODEL), data=host_count_df, colour="black", width=0.7) +
+    geom_text(aes(x=2, label = n, group=HOSTING_MODEL), size = 7, data=host_count_df, position = position_stack(vjust = 0.5)) +
+    geom_label(aes(x=1.5, label = label), size=8, data=dept_count_df, position=position_nudge(y=0.5)) +
+    scale_fill_brewer(palette="PuBu") +
+    scale_x_continuous(breaks=c(1,2), labels=c("CLASS", "HOST")) + 
+    facet_wrap(~DEPT, scales="free_x") +
+    theme_light() +
+    theme(strip.text = element_text(size=15),
+          axis.text.y = element_blank(),
+          panel.grid = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title = element_blank(),
+          legend.text = element_text(size=10)
+          )
+}
+
+
+
+
+## Create dept classification - hosting barchart
+
+## Tweak network graph
 tweak_graph <- function(vis_network) {
   vis_network %>% 
   visNodes(shape="ellipse", width="100%") 
 }
 
-
+## Create system inspector diagram
 vis_inspect <- function(df_nodes, df_edges, id) {
   filtered_dfs <- filter_systems(df_nodes, df_edges, id) 
   
@@ -166,7 +235,9 @@ plot_sys_class_count <- function(df_nodes) {
           axis.text=element_blank(),
           axis.line=element_blank(),
           panel.grid=element_blank(),
-          axis.ticks=element_blank())
+          axis.ticks=element_blank(),
+          legend.text = element_text(size=10)
+          )
 }
 
 

@@ -14,6 +14,18 @@ sidebar <- dashboardSidebar(
 
 body <- dashboardBody(
   tabItems(
+    tabItem(tabName="overview",
+            fluidRow(
+                 valueBox(value={nodes %>% count(ID) %>% nrow()},
+                           subtitle="Total systems",
+                           icon=icon("server")
+                 )
+            ),
+            fluidRow(
+                 box(title="All systems", width=4, status="info", plotOutput("class_host_barchart", height = 600,)),
+                 box(title="By department", width=8, status="info", plotOutput("dept_class_host_barchart", height = 600))
+            )
+    ),
     tabItem(tabName = "network_vis",
             box(title="Network visualisation",
                 width=12,
@@ -48,7 +60,9 @@ body <- dashboardBody(
                 uiOutput("inspect_system")
               )
             )
-    )
+    ),
+    tabItem(tabName = "all_systems",
+            dataTableOutput("nodesTable"))
   )
 )
 
