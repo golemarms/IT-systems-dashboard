@@ -4,6 +4,7 @@ source("helper.R")
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Overview", tabName = "overview", icon=icon("tachometer-alt")),
+    menuItem("Network visualization", tabName = "network_vis", icon=icon("project-diagram")),
     menuItem("System Inspector", tabName = "system_inspector", icon=icon("search-plus")),
     menuItem("All systems", tabName = "all_systems", icon=icon("list")),
     menuItem("Submit new system", tabName = "submit", icon=icon("plus"))
@@ -13,18 +14,11 @@ sidebar <- dashboardSidebar(
 
 body <- dashboardBody(
   tabItems(
-    tabItem(tabName = "overview",
-            fluidRow(valueBox(n_systems, "Total number of systems", color="green", icon=icon("check-circle")),
-                     valueBox(floor(n_systems/4), "In progress", color="yellow", icon=icon("cogs")),
-                     valueBox(floor(n_systems/3), "Pending approval", color="red", icon=icon("exclamation-triangle"))),
-            box(title="Summary of systems",
-                plotlyOutput("class_count_chart", height="600px"),
-                status="info",
-                width=4),
+    tabItem(tabName = "network_vis",
             box(title="Network visualisation",
-                width=8,
+                width=12,
                 status="info",
-                visNetworkOutput("network", width = "100%", height = "600px"))
+                visNetworkOutput("network", width = "100%", height = "700px"))
     ),
     
     tabItem(tabName = "system_inspector",
