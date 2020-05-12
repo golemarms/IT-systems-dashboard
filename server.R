@@ -1,6 +1,6 @@
 source("helper.R")
 
-server <- function(input,output, session) {
+server <- function(input, output, session) {
   
   output$class_count_chart <- renderPlotly({nodes %>%
       plot_sys_class_count %>% 
@@ -30,10 +30,10 @@ server <- function(input,output, session) {
       make_choice_list
   })
   
-  uppdate_all <- make_mult_updater(list(make_checkbox_updator(session, "dept", {nodes %>% pull(DEPT) %>% levels}),
+  update_all <- make_mult_updater(list(make_checkbox_updator(session, "dept", {nodes %>% pull(DEPT) %>% levels}),
                                         make_checkbox_updator(session, "hosting", {nodes %>% pull(HOSTING_MODEL) %>% levels}),
                                         make_checkbox_updator(session, "classification", {nodes %>% pull(CLASSIFICATION) %>% levels})))
-  observeEvent(input$toggle_all, {uppdate_all()})
+  observeEvent(input$toggle_all, {update_all()})
   
   
   update_depts <- make_checkbox_updator(session, "dept", {nodes %>% pull(DEPT) %>% levels})
@@ -49,11 +49,32 @@ server <- function(input,output, session) {
   observe({updateSelectizeInput(session, "system_select", choices = choice_list())})
   
   
-  # Chosen system
+  ## Chosen/selected  system
   
   chosen_system <- reactiveVal()
+  selected_isnull <- reactive({nchar(input$system_select)==0})
   
-  observeEvent(input$submit_system, {chosen_system(input$system_select)})
+  updated_selected_null <- function(is_null){
+    if (is_null) {
+      updateButton(session=session,
+                   inputId="choose_system",
+                   label="No system selected",
+                   style= "secondary", 
+                   disabled=T)
+    }
+    
+    else{
+      updateButton(session=session,
+                   inputId="choose_system",
+                   label="Choose",
+                   style="primary",
+                   disabled=F)
+    }
+  }
+  
+  observeEvent(selected_isnull(), {updated_selected_null(selected_isnull())})
+  
+  observeEvent(input$choose_system, {chosen_system(input$system_select)})
   
   ## Build system inspector
   
@@ -80,17 +101,21 @@ server <- function(input,output, session) {
             status="primary",
             width=12,
             visNetworkOutput("inspected_network", width = "100%")),
-            actionButton("change_system", "Switch to selected system", class="pull-right", style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
+            actionButton(inputId="switch_system",
+                         label="Switch to selected system",
+                         class="pull-right",
+                         style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
         
       )
     }
     
   }
   
-  observeEvent(input$change_system, {chosen_system(input$inspected_network_selected)})
+  observeEvent(input$switch_system, {chosen_system(input$inspected_network_selected)})
   
   ## Debugging etc.
   
+  observe({cat("selected_isnull: ", selected_isnull(), "\n")})
   observe({cat("selected: ", input$system_select, "\n")})
   observe({cat("chosen: ", chosen_system(), "\n")})
 

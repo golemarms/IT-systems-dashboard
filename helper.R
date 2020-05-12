@@ -4,6 +4,7 @@
 require(tidyverse)
 require(visNetwork)
 require(shiny)
+require(shinyBS)
 require(searchable)
 require(plotly)
 require(shinydashboard)
@@ -183,6 +184,8 @@ make_CheckboxGroupInput <- function(inputId, label, choices, selected_init=TRUE)
 
 
 make_checkbox_updator <- function(session, inputId, choices) {
+  ## checkbox updator function factory 
+  
   select_state <-  FALSE
   
   update <- function() {
@@ -193,7 +196,7 @@ make_checkbox_updator <- function(session, inputId, choices) {
     else{
       selected <- character(0)
     }
-    # cat(inputId, "selected:", selected, "\n")
+    
     updateCheckboxGroupInput(session=session, inputId=inputId, selected=selected)
     select_state <<- !select_state
   }

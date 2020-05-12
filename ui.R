@@ -39,7 +39,7 @@ body <- dashboardBody(
 
                 # Dropdown list of systems to select
                 selectizeInput("system_select", "Select system", {nodes %>% make_choice_list()}),
-                actionButton("submit_system", "Choose", style="color: #fff; background-color: #337ab7; border-color: #2e6da4"), ## Make sure to put in validation
+                bsButton("choose_system", "Choose", style="primary"), ## Make sure to put in validation
                 h2("Download"),
                 downloadButton("bia_download", label = "Download BIA form"),
                 downloadButton("network_png_download", label = "Download network interface diagram")
