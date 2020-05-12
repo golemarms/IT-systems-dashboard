@@ -14,6 +14,7 @@ server <- function(input,output, session) {
                                          degree = list(from=1, to=1),
                                          algorithm = "hierarchical"),
                  ) %>% 
+      visLegend(useGroups=F, addNodes=lnodes) %>% 
       tweak_graph()
   })
   

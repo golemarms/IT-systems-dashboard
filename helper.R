@@ -85,6 +85,11 @@ nodes <- nodes_raw %>%
 
 n_systems <- nodes %>% summarise(n=n_distinct(id)) %>% unlist(use.name=F)
 
+lnodes <- class_colors_df %>% 
+  rename(label=CLASSIFICATION) %>% 
+  mutate(shape="ellipse")
+
+
 # functions ---------------------------------------------------------------
 
 make_choice_list <- function(df_nodes) {
@@ -139,7 +144,8 @@ vis_inspect <- function(df_nodes, df_edges, id) {
                           levelSeparation=300) %>% 
     visEdges(smooth=list(enabled=T),
              font=list(align="middle")) %>% 
-    visOptions(nodesIdSelection=list(enabled=T, selected=id))
+    visOptions(nodesIdSelection=list(enabled=T, selected=id)) %>% 
+    visLegend(useGroups=F, addNodes=lnodes)
 }
 
 
