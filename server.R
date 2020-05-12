@@ -58,7 +58,7 @@ server <- function(input, output, session) {
     if (is_null) {
       updateButton(session=session,
                    inputId="choose_system",
-                   label="No system selected",
+                   label="Invalid combination",
                    style= "secondary", 
                    disabled=T)
     }
