@@ -5,9 +5,6 @@ account: ivanong
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2126801
-bundleId: 3080782
+bundleId: 3136170
 url: https://ivanong.shinyapps.io/system_network/
-when: 1588156042.94452
-asMultiple: FALSE
-asStatic: FALSE
-ignoredFiles: scratch.R
+when: 1589276496.50795

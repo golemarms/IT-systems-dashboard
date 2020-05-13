@@ -155,8 +155,9 @@ class_host_barchart <- function(.nodes=nodes) {
 
 dept_class_host_barchart <- function(.nodes=nodes) {
   class_count_df <- .nodes %>% 
-    count(DEPT, CLASSIFICATION) 
-  
+    count(DEPT, CLASSIFICATION) %>% 
+    mutate(CLASSIFICATION = fct_rev(CLASSIFICATION))
+    
   host_count_df <- .nodes %>% 
     count(DEPT, HOSTING_MODEL) 
   
